@@ -25,7 +25,7 @@ Melalui integrasi informasi dan layanan publik dalam satu platform, TepatBantu d
 
 ## Tech Stack
 
-| Komponen | Teknologi | Kegunaan |
+| Komponen | Teknologi |
 |---|---|
 | Frontend | React.js |
 | Backend | Laravel | 
@@ -71,7 +71,15 @@ http://localhost:5173
 
 📂 Project Structure
 
+```
 TepatBantu/
+│
+├── Backend/
+│   ├── app/
+│   ├── routes/
+│   ├── database/
+│   ├── config/
+│   └── composer.json
 │
 ├── Frontend/
 │   ├── node_modules/
@@ -86,29 +94,21 @@ TepatBantu/
 │   │   ├── App.jsx
 │   │   ├── index.css
 │   │   └── main.jsx
+│   │
 │   ├── .oxlintrc.json
 │   ├── index.html
-│   ├── package-lock.json
 │   ├── package.json
-│   ├── README.md
+│   ├── package-lock.json
 │   └── vite.config.js
-│
-├── backend/
-│   ├── app/
-│   ├── routes/
-│   ├── database/
-│   ├── config/
-│   └── composer.json
 │
 ├── docker/
 │   └── postgres/
 │
 ├── docker-compose.yml
 ├── .env.example
-├── .env
 ├── .gitignore
 └── README.md
-
+```
 ## Current Progress
 
 **Development Stage: UI Mockup / Prototype**
