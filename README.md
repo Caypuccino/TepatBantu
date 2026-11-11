@@ -25,7 +25,7 @@ Melalui integrasi informasi dan layanan publik dalam satu platform, TepatBantu d
 
 ## Tech Stack
 
-| Komponen | Teknologi | Kegunaan |
+| Komponen | Teknologi |
 |---|---|
 | Frontend | React.js |
 | Backend | Laravel | 
@@ -71,7 +71,15 @@ http://localhost:5173
 
 📂 Project Structure
 
+```
 TepatBantu/
+│
+├── Backend/
+│   ├── app/
+│   ├── routes/
+│   ├── database/
+│   ├── config/
+│   └── composer.json
 │
 ├── Frontend/
 │   ├── node_modules/
@@ -86,47 +94,20 @@ TepatBantu/
 │   │   ├── App.jsx
 │   │   ├── index.css
 │   │   └── main.jsx
+│   │
 │   ├── .oxlintrc.json
 │   ├── index.html
-│   ├── package-lock.json
 │   ├── package.json
-│   ├── README.md
+│   ├── package-lock.json
 │   └── vite.config.js
-│
-├── backend/
-│   ├── app/
-│   ├── routes/
-│   ├── database/
-│   ├── config/
-│   └── composer.json
 │
 ├── docker/
 │   └── postgres/
 │
 ├── docker-compose.yml
 ├── .env.example
-├── .env
 ├── .gitignore
 └── README.md
-
-## Current Progress
-
-**Development Stage: UI Mockup / Prototype**
-Pengembangan TepatBantu saat ini masih berada pada tahap perancangan dan implementasi antarmuka pengguna.
-
-Progress yang telah dilakukan:
-- Perancangan konsep dan identifikasi permasalahan.
-- Penentuan fitur utama website.
-- Perancangan struktur halaman dan alur pengguna.
-- Pembuatan mockup antarmuka website.
-
-Pengembangan selanjutnya:
-- Implementasi frontend menggunakan React.js.
-- Pengembangan backend dan REST API menggunakan Laravel.
-- Konfigurasi PostgreSQL menggunakan Docker.
-- Integrasi frontend, backend, dan database.
-- Implementasi fitur pengecekan status bantuan, pengajuan, dan pengaduan.
-- Pengembangan dashboard transparansi data dan visualisasi statistik.
 
 ## Privacy & Security
 

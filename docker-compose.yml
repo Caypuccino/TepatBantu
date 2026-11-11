@@ -1,0 +1,40 @@
+services:
+  app:
+    build:
+      context: ./Backend           # <--- Arahkan ke folder Backend
+      dockerfile: Dockerfile       # <--- Cari Dockerfile di dalam folder Backend
+    image: tepatbantu-app
+    container_name: tepatbantu-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./Backend:/var/www/html    # <--- Sinkronisasi folder Backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - tepatbantu-network
+    command: php artisan serve --host=0.0.0.0 --port=8000
+
+  db:
+    image: postgres:16-alpine
+    container_name: tepatbantu-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: tepatbantu
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432" # (Kiri 5433 agar tidak bentrok dengan Postgres lokal Windows)
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - tepatbantu-network
+
+networks:
+  tepatbantu-network:
+    driver: bridge
+
+volumes:
+  db-data:
