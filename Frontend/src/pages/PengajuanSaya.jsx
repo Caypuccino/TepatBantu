@@ -23,7 +23,7 @@ import {
   Users,
 } from 'lucide-react';
 
-export default function PengajuanSaya({ onNavigate, onOpenDialog }) {
+export default function PengajuanSaya({ onNavigate, onOpenDialog, currentUser }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('Semua Status');
   const [selectedYear, setSelectedYear] = useState('Semua Tahun');
@@ -170,7 +170,13 @@ export default function PengajuanSaya({ onNavigate, onOpenDialog }) {
               </p>
             </div>
             <button
-              onClick={() => onNavigate ? onNavigate('buat-usulan') : onOpenDialog && onOpenDialog('Pengajuan Usulan Mandiri')}
+              onClick={() => {
+                if (!currentUser) {
+                  onNavigate && onNavigate('login', 'buat-usulan');
+                } else {
+                  onNavigate ? onNavigate('buat-usulan') : onOpenDialog && onOpenDialog('Pengajuan Usulan Mandiri');
+                }
+              }}
               className="face-semibold flex items-center justify-center gap-2 rounded-lg bg-[#00513b] px-5 py-2.5 text-xs text-white shadow-xs transition hover:bg-[#003828] shrink-0"
             >
               <Plus className="size-4" />
@@ -198,17 +204,19 @@ export default function PengajuanSaya({ onNavigate, onOpenDialog }) {
                     </span>
                   </div>
                   <div className="mt-3 flex items-baseline gap-2">
-                    <strong className="face-bold text-3xl text-[#003828]">{s.count}</strong>
+                    <strong className="face-bold text-3xl text-[#003828]">
+                      {currentUser ? s.count : '0'}
+                    </strong>
                     <span className="text-xs text-[#57605d] font-semibold">{s.unit}</span>
                   </div>
                 </div>
                 <div className="mt-3 flex items-center gap-1.5 border-t border-[#ebf6ef] pt-2 text-[11px] text-[#707974]">
-                  {s.dotColor ? (
+                  {s.dotColor && currentUser ? (
                     <span className={`size-2 rounded-full ${s.dotColor}`} />
                   ) : (
                     <Clock className="size-3 text-[#176b50]" />
                   )}
-                  <span>{s.subtext}</span>
+                  <span>{currentUser ? s.subtext : 'Belum ada data'}</span>
                 </div>
               </div>
             );

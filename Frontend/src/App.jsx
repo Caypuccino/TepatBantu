@@ -7,6 +7,9 @@ import HalamanPengaduanSaya from "./pages/PengaduanSaya";
 import HalamanDataFaktual from "./pages/DataFaktual";
 import HalamanPressRelease from "./pages/PressRelease";
 import HalamanFAQ from "./pages/FAQ";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import ProfilSaya from "./pages/ProfilSaya";
 
 const A = "/assets";
 
@@ -136,6 +139,16 @@ export default function App() {
   const [message, setMessage] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const [dialog, setDialog] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null); // null = belum login, object = sudah login
+  const [redirectTarget, setRedirectTarget] = useState(null); // target halaman setelah login
+
+  const navigateTo = (page, redirect = null) => {
+    if (redirect) {
+      setRedirectTarget(redirect);
+    }
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   // Update URL when currentPage changes
   useEffect(() => {
@@ -240,25 +253,49 @@ export default function App() {
 
           {/* Action Buttons */}
           <div className="hidden items-center gap-2 sm:flex">
-            <button
-              onClick={() => setDialog("Masuk")}
-              className="face-semibold h-10 rounded bg-white px-4 text-sm text-[#326856] hover:bg-[#ebf6ef]"
-            >
-              Masuk
-            </button>
-            <button
-              onClick={() => setDialog("Daftar Akun")}
-              className="face-semibold h-10 rounded bg-[#00513b] px-4 text-sm text-white hover:bg-[#003828]"
-            >
-              Daftar Akun
-            </button>
-            <button
-              onClick={() => setDialog("Profil Pengguna")}
-              className="ml-1 flex size-8 items-center justify-center rounded-xl bg-[#003828]"
-              aria-label="Buka profil pengguna"
-            >
-              <img src={`${A}/59e02.svg`} alt="" />
-            </button>
+            {currentUser ? (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => navigateTo("profil")}
+                  className="flex items-center gap-2 text-right hover:opacity-85 transition"
+                >
+                  <div>
+                    <span className="block text-xs font-bold text-[#003828]">{currentUser.nama}</span>
+                    <span className="block text-[10px] text-[#176b50] font-medium">✓ Warga Terverifikasi</span>
+                  </div>
+                  <span
+                    className="flex size-9 items-center justify-center rounded-xl bg-[#003828] text-white text-xs font-bold shadow-xs hover:bg-[#176b50]"
+                    title="Buka Halaman Profil"
+                  >
+                    {currentUser.nama.charAt(0)}
+                  </span>
+                </button>
+                <button
+                  onClick={() => {
+                    setCurrentUser(null);
+                    setCurrentPage("home");
+                  }}
+                  className="rounded-lg border border-[#dce9df] px-2.5 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 transition"
+                >
+                  Keluar
+                </button>
+              </div>
+            ) : (
+              <>
+                <button
+                  onClick={() => navigateTo("login")}
+                  className="face-semibold h-10 rounded-lg bg-white px-4 text-sm text-[#326856] hover:bg-[#ebf6ef] border border-black/[0.04]"
+                >
+                  Masuk
+                </button>
+                <button
+                  onClick={() => navigateTo("register")}
+                  className="face-semibold h-10 rounded-lg bg-[#00513b] px-4 text-sm text-white hover:bg-[#003828] shadow-xs"
+                >
+                  Daftar Akun
+                </button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -288,59 +325,118 @@ export default function App() {
               </button>
             ))}
             <div className="mt-3 flex gap-2 border-t border-[#dce9df] pt-3">
-              <button
-                onClick={() => {
-                  setDialog("Masuk");
-                  setMenuOpen(false);
-                }}
-                className="face-semibold h-10 flex-1 rounded bg-white text-sm text-[#326856]"
-              >
-                Masuk
-              </button>
-              <button
-                onClick={() => {
-                  setDialog("Daftar Akun");
-                  setMenuOpen(false);
-                }}
-                className="face-semibold h-10 flex-1 rounded bg-[#00513b] text-sm text-white"
-              >
-                Daftar Akun
-              </button>
+              {currentUser ? (
+                <div className="flex w-full items-center justify-between">
+                  <button
+                    onClick={() => {
+                      navigateTo("profil");
+                      setMenuOpen(false);
+                    }}
+                    className="text-left"
+                  >
+                    <span className="block text-xs font-bold text-[#003828]">{currentUser.nama}</span>
+                    <span className="block text-[10px] text-[#176b50]">Buka Halaman Profil ›</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setCurrentUser(null);
+                      setCurrentPage("home");
+                      setMenuOpen(false);
+                    }}
+                    className="rounded bg-red-100 px-3 py-1.5 text-xs text-red-700 font-semibold"
+                  >
+                    Keluar
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <button
+                    onClick={() => {
+                      navigateTo("login");
+                      setMenuOpen(false);
+                    }}
+                    className="face-semibold h-10 flex-1 rounded bg-white text-sm text-[#326856]"
+                  >
+                    Masuk
+                  </button>
+                  <button
+                    onClick={() => {
+                      navigateTo("register");
+                      setMenuOpen(false);
+                    }}
+                    className="face-semibold h-10 flex-1 rounded bg-[#00513b] text-sm text-white"
+                  >
+                    Daftar Akun
+                  </button>
+                </>
+              )}
             </div>
           </nav>
         )}
       </header>
 
-      {/* Dynamic View: Buat Usulan Baru | Detail Pengajuan | Pengajuan Saya | Pengaduan Saya | Cek Bansos | Home */}
-      {currentPage === "buat-usulan" ? (
-        <BuatUsulanBaru
-          onNavigate={(page) => {
-            setCurrentPage(page);
+      {/* Dynamic View: Buat Usulan Baru | Detail Pengajuan | Pengajuan Saya | Pengaduan Saya | Cek Bansos | Login | Register | Profil | Home */}
+      {currentPage === "profil" ? (
+        <ProfilSaya
+          currentUser={currentUser}
+          onNavigate={(page, redirect) => navigateTo(page, redirect)}
+          onLogout={() => {
+            setCurrentUser(null);
+            setCurrentPage("home");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          onUpdateProfile={(updated) => {
+            setCurrentUser((prev) => ({ ...prev, ...updated }));
+          }}
+        />
+      ) : currentPage === "login" ? (
+        <Login
+          onNavigate={(page, redirect) => navigateTo(page, redirect)}
+          redirectTarget={redirectTarget}
+          onLoginSuccess={(user) => {
+            setCurrentUser(user);
+            if (redirectTarget) {
+              setCurrentPage(redirectTarget);
+              setRedirectTarget(null);
+            } else {
+              setCurrentPage("pengajuan-saya");
+            }
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
         />
-      ) : currentPage === "detail-pengajuan" ? (
-        <DetailPengajuan
-          onNavigate={(page) => {
-            setCurrentPage(page);
+      ) : currentPage === "register" ? (
+        <Register
+          onNavigate={(page, redirect) => navigateTo(page, redirect)}
+          onRegisterSuccess={(user) => {
+            setCurrentUser(user);
+            if (redirectTarget) {
+              setCurrentPage(redirectTarget);
+              setRedirectTarget(null);
+            } else {
+              setCurrentPage("pengajuan-saya");
+            }
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
+        />
+      ) : currentPage === "buat-usulan" ? (
+        <BuatUsulanBaru
+          onNavigate={(page, redirect) => navigateTo(page, redirect)}
+        />
+      ) : currentPage === "detail-pengajuan" ? (
+        <DetailPengajuan
+          onNavigate={(page, redirect) => navigateTo(page, redirect)}
           onOpenDialog={(name) => setDialog(name)}
         />
       ) : currentPage === "pengajuan-saya" ? (
         <PengajuanSaya
-          onNavigate={(page) => {
-            setCurrentPage(page);
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
+          currentUser={currentUser}
+          onNavigate={(page, redirect) => navigateTo(page, redirect)}
           onOpenDialog={(name) => setDialog(name)}
         />
       ) : currentPage === "pengaduan-saya" ? (
         <HalamanPengaduanSaya
-          onNavigate={(page) => {
-            setCurrentPage(page);
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
+          currentUser={currentUser}
+          onNavigate={(page, redirect) => navigateTo(page, redirect)}
           onOpenDialog={(name) => setDialog(name)}
         />
       ) : currentPage === "data-faktual" ? (

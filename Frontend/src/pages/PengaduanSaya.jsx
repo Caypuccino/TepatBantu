@@ -26,7 +26,7 @@ import {
   UserCheck,
 } from 'lucide-react';
 
-export default function PengaduanSaya({ onNavigate }) {
+export default function PengaduanSaya({ onNavigate, currentUser }) {
   // Mode: 'list' (Layanan Pengaduan & Sanggah) atau 'create' (Formulir Pengaduan & Sanggah)
   const [viewMode, setViewMode] = useState('list');
   const [selectedTicketId, setSelectedTicketId] = useState('PGD-2025-0142');
@@ -132,8 +132,12 @@ export default function PengaduanSaya({ onNavigate }) {
                 </div>
                 <button
                   onClick={() => {
-                    setViewMode('create');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    if (!currentUser) {
+                      onNavigate && onNavigate('login', 'pengaduan-saya');
+                    } else {
+                      setViewMode('create');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
                   }}
                   className="face-semibold flex shrink-0 items-center gap-1.5 rounded-lg bg-[#00513b] px-4 py-2.5 text-xs text-white shadow-xs hover:bg-[#003828] transition"
                 >
