@@ -317,7 +317,13 @@ export default function PengajuanSaya({ onNavigate, onOpenDialog, currentUser })
                   <span className="flex items-center gap-1.5">Masuk ke Akun Anda <ArrowRight className="size-3.5" /></span>
                 </button>
                 <button
-                  onClick={() => onNavigate && onNavigate('buat-usulan')}
+                  onClick={() => {
+                    if (!currentUser) {
+                      onNavigate && onNavigate('login', 'buat-usulan');
+                    } else {
+                      onNavigate && onNavigate('buat-usulan');
+                    }
+                  }}
                   className="face-semibold rounded-lg border border-[#dce9df] bg-white px-4 py-2.5 text-xs text-[#003828] hover:bg-[#ebf6ef] transition"
                 >
                   + Buat Usulan Baru

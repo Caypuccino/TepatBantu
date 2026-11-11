@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 import { checkNikStatus } from '../services/api';
 
-export default function CekBansos({ onNavigate, onOpenDialog }) {
+export default function CekBansos({ onNavigate, onOpenDialog, currentUser }) {
   const [nik, setNik] = useState('');
   const [noKk, setNoKk] = useState('');
   const [wilayah, setWilayah] = useState('');
