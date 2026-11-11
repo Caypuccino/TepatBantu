@@ -26,6 +26,7 @@ Melalui integrasi informasi dan layanan publik dalam satu platform, TepatBantu d
 ## Tech Stack
 
 | Komponen | Teknologi |
+| Komponen | Teknologi |
 |---|---|
 | Frontend | React.js |
 | Backend | Laravel | 
@@ -72,7 +73,15 @@ http://localhost:5173
 📂 Project Structure
 
 ```
+```
 TepatBantu/
+│
+├── Backend/
+│   ├── app/
+│   ├── routes/
+│   ├── database/
+│   ├── config/
+│   └── composer.json
 │
 ├── Backend/
 │   ├── app/
@@ -95,8 +104,10 @@ TepatBantu/
 │   │   ├── index.css
 │   │   └── main.jsx
 │   │
+│   │
 │   ├── .oxlintrc.json
 │   ├── index.html
+│   ├── package.json
 │   ├── package.json
 │   ├── package-lock.json
 │   └── vite.config.js
@@ -116,3 +127,4 @@ TepatBantu mengutamakan perlindungan data pribadi masyarakat. Informasi sensitif
 ## Project Goal
 
 Mewujudkan ekosistem informasi bantuan sosial yang transparan, mudah diakses, dan partisipatif melalui pemanfaatan teknologi digital.
+

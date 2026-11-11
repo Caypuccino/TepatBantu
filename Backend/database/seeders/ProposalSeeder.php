@@ -15,6 +15,7 @@ class ProposalSeeder extends Seeder
     public function run(): void
     {
         $referenceGenerator = new ReferenceGenerator();
+<<<<<<< HEAD
         $regionService = new \App\Services\RegionService();
         $kotaBandung = Region::where('name', 'Kota Bandung')->firstOrFail();
         $kabGarut = Region::where('name', 'Kabupaten Garut')->firstOrFail();
@@ -22,13 +23,23 @@ class ProposalSeeder extends Seeder
         $bandungRegionIds = $regionService->subtreeIds($kotaBandung->id);
         $garutRegionIds = $regionService->subtreeIds($kabGarut->id);
 
+=======
+        $kotaBandung = Region::where('name', 'Kota Bandung')->firstOrFail();
+        $kabGarut = Region::where('name', 'Kabupaten Garut')->firstOrFail();
+
+>>>>>>> 5a81832f267933705c5780f7651a0a4bf0bf0d21
         $warga1 = User::where('email', 'warga1@demo.test')->firstOrFail();
         $warga2 = User::where('email', 'warga2@demo.test')->firstOrFail();
         $petugasBdg = User::where('email', 'petugas.bdg@demo.test')->firstOrFail();
         $petugasGarut = User::where('email', 'petugas.garut@demo.test')->firstOrFail();
 
+<<<<<<< HEAD
         $bandungCitizens = Citizen::whereIn('region_id', $bandungRegionIds)->skip(0)->take(8)->get();
         $garutCitizens = Citizen::whereIn('region_id', $garutRegionIds)->skip(0)->take(6)->get();
+=======
+        $bandungCitizens = Citizen::where('region_id', $kotaBandung->id)->skip(0)->take(8)->get();
+        $garutCitizens = Citizen::where('region_id', $kabGarut->id)->skip(0)->take(6)->get();
+>>>>>>> 5a81832f267933705c5780f7651a0a4bf0bf0d21
 
         $statuses = [
             ProposalStatus::DIAJUKAN,
