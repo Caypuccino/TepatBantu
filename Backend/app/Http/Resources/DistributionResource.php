@@ -12,7 +12,8 @@ class DistributionResource extends JsonResource
         return [
             'id' => $this->id,
             'period' => $this->period,
-            'channel' => $this->channel,
+            'channel' => $this->formatChannel(),
+            'channel_code' => $this->channel,
             'location' => $this->location,
             'scheduled_date' => $this->scheduled_date,
             'status' => $this->status->value,
@@ -23,4 +24,23 @@ class DistributionResource extends JsonResource
             'histories' => DistributionHistoryResource::collection($this->whenLoaded('histories')),
         ];
     }
+
+    private function formatChannel(): string
+    {
+        $channelMap = [
+            'BRI' => 'Bank BRI',
+            'BNI' => 'Bank BNI',
+            'BTN' => 'Bank BTN',
+            'MANDIRI' => 'Bank Mandiri',
+            'TITIK_LOKAL' => 'Titik Lokal / Kantor Pos',
+            'POSYANDU' => 'Posyandu',
+            'KELURAHAN' => 'Kantor Kelurahan',
+            'KECAMATAN' => 'Kantor Kecamatan',
+            'OPZ' => 'Organisasi Penyalur Zakat',
+            'TRANSFER_BANK' => 'Transfer Bank',
+        ];
+
+        return $channelMap[$this->channel] ?? $this->channel;
+    }
 }
+

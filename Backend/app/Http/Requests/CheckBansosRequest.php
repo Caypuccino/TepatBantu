@@ -15,6 +15,8 @@ class CheckBansosRequest extends FormRequest
     {
         return [
             'nik' => 'required|regex:/^\d{16}$/',
+            'wilayah' => 'required|string|max:255',
+            'kecamatan' => 'required|string|max:255',
         ];
     }
 
@@ -23,6 +25,8 @@ class CheckBansosRequest extends FormRequest
         return [
             'nik.required' => 'NIK wajib diisi',
             'nik.regex' => 'NIK harus 16 digit',
+            'wilayah.required' => 'Wilayah wajib diisi',
+            'kecamatan.required' => 'Kecamatan wajib diisi',
         ];
     }
 }

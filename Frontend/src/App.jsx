@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CekBansos from "./pages/CekBansos";
 import PengajuanSaya from "./pages/PengajuanSaya";
 
@@ -117,11 +117,30 @@ function scrollToId(id) {
 }
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState("pengajuan-saya"); // Default to Pengajuan Saya page as requested
+  // Determine initial page from URL pathname
+  const getInitialPage = () => {
+    const pathname = window.location.pathname;
+    if (pathname.includes('cek-bansos')) return 'cek-bansos';
+    if (pathname.includes('pengajuan-saya')) return 'pengajuan-saya';
+    return 'home';
+  };
+
+  const [currentPage, setCurrentPage] = useState(getInitialPage());
   const [nik, setNik] = useState("");
   const [message, setMessage] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const [dialog, setDialog] = useState(null);
+
+  // Update URL when currentPage changes
+  useEffect(() => {
+    if (currentPage === 'cek-bansos') {
+      window.history.pushState(null, '', '/cek-bansos');
+    } else if (currentPage === 'pengajuan-saya') {
+      window.history.pushState(null, '', '/pengajuan-saya');
+    } else {
+      window.history.pushState(null, '', '/');
+    }
+  }, [currentPage]);
 
   function checkNik(event) {
     event?.preventDefault();

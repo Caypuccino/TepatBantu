@@ -64,52 +64,58 @@ const DUMMY_RECIPIENTS = {
   },
 };
 
-export const checkNikStatus = async (nik) => {
+export const checkNikStatus = async (nik, wilayah, kecamatan) => {
   try {
-    // Attempt real API call if backend is available
-    // const res = await apiClient.post('/bansos/check-nik', { nik });
-    // return res.data;
+    const res = await apiClient.post('/v1/public/check-bansos', { nik, wilayah, kecamatan });
+    return res.data;
   } catch (err) {
-    console.warn('Backend API unavailable, falling back to prototype mock data:', err);
-  }
+    // Handle validation errors (422) or other errors
+    if (err.response?.status === 422) {
+      throw {
+        code: 'VALIDATION_ERROR',
+        message: err.response?.data?.message || 'NIK harus 16 digit',
+        errors: err.response?.data?.errors,
+      };
+    }
 
-  // Prototype mock fallback
-  await new Promise((r) => setTimeout(r, 600)); // Simulate latency
-  const cleanNik = (nik || '').replace(/\D/g, '');
+    if (err.response?.status === 429) {
+      throw {
+        code: 'RATE_LIMITED',
+        message: 'Terlalu banyak permintaan. Coba lagi dalam beberapa menit.',
+      };
+    }
 
-  if (DUMMY_RECIPIENTS[cleanNik]) {
-    return {
-      success: true,
-      found: true,
-      data: DUMMY_RECIPIENTS[cleanNik],
+    console.warn('Backend API error:', err);
+    throw {
+      code: 'SERVER_ERROR',
+      message: 'Terjadi kesalahan server. Silakan coba beberapa saat lagi.',
     };
   }
-
-  return {
-    success: true,
-    found: false,
-    message: 'Data NIK tidak ditemukan dalam daftar penerima aktif periode berjalan. Anda dapat mengajukan usulan mandiri melalui menu Pengajuan Bantuan.',
-  };
 };
 
 export const submitPengajuan = async (formData) => {
-  await new Promise((r) => setTimeout(r, 800));
-  const trackingId = 'TB-USL-' + Math.floor(100000 + Math.random() * 900000);
-  return {
-    success: true,
-    trackingId,
-    message: 'Usulan mandiri Anda berhasil didaftarkan dan sedang menunggu verifikasi petugas wilayah.',
-  };
+  try {
+    // Tembak ke API Laravel yang akan kita buat
+    const res = await apiClient.post('/v1/public/pengajuan', formData);
+    return res.data;
+  } catch (err) {
+    throw {
+      code: 'SERVER_ERROR',
+      message: err.response?.data?.message || 'Gagal mengirim usulan.',
+    };
+  }
 };
 
 export const submitSanggahan = async (formData) => {
-  await new Promise((r) => setTimeout(r, 800));
-  const ticketId = 'TB-SGH-' + Math.floor(100000 + Math.random() * 900000);
-  return {
-    success: true,
-    ticketId,
-    message: 'Laporan sanggahan telah diterima dengan aman. Identitas Anda terenkripsi dan terlindungi.',
-  };
+  try {
+    const res = await apiClient.post('/v1/public/sanggahan', formData);
+    return res.data;
+  } catch (err) {
+    throw {
+      code: 'SERVER_ERROR',
+      message: err.response?.data?.message || 'Gagal mengirim pengaduan.',
+    };
+  }
 };
 
 export default apiClient;

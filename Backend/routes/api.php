@@ -17,16 +17,22 @@ use App\Http\Controllers\OfficerDistributionController;
 use App\Http\Controllers\OfficerProposalController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProposalController;
+use App\Http\Controllers\PublicCheckBansosController;
+use App\Http\Controllers\PublicComplaintController;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\PublicProposalController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
     // Public endpoints
     Route::prefix('public')->group(function () {
-        Route::post('check-bansos', [PublicController::class, 'checkBansos']);
+        Route::post('check-bansos', [PublicCheckBansosController::class, 'check']);
+        Route::post('pengajuan', [PublicProposalController::class, 'submit']);
+        Route::post('sanggahan', [PublicComplaintController::class, 'submit']);
         Route::get('stats', [PublicController::class, 'stats']);
         Route::get('press-releases', [PublicController::class, 'pressReleases']);
         Route::get('press-releases/{slug}', [PublicController::class, 'pressReleaseDetail']);
+        Route::get('regions', [\App\Http\Controllers\PublicRegionController::class, 'index']);
     });
 
     // Upload endpoint (auth optional)

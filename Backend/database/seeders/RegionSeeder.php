@@ -9,44 +9,50 @@ class RegionSeeder extends Seeder
 {
     public function run(): void
     {
-        // Jawa Barat (Provinsi)
-        $jabarId = Region::create([
-            'level' => 'PROVINSI',
-            'name' => 'Jawa Barat',
-        ])->id;
+        $data = [
+            'Jawa Barat' => [
+                'Kota Bandung' => ['Coblong', 'Sukajadi', 'Lengkong'],
+                'Kabupaten Garut' => ['Tarogong Kidul', 'Garut Kota'],
+                'Kota Bekasi' => ['Bekasi Timur', 'Bekasi Barat'],
+            ],
+            'DKI Jakarta' => [
+                'Jakarta Selatan' => ['Kebayoran Baru', 'Tebet', 'Cilandak'],
+                'Jakarta Pusat' => ['Menteng', 'Tanah Abang', 'Gambir'],
+            ],
+            'Jawa Timur' => [
+                'Kota Surabaya' => ['Gubeng', 'Sukolilo', 'Rungkut'],
+                'Kota Malang' => ['Klojen', 'Blimbing', 'Lowokwaru'],
+            ],
+            'Sumatera Utara' => [
+                'Kota Medan' => ['Medan Baru', 'Medan Kota', 'Medan Selayang'],
+                'Kabupaten Deli Serdang' => ['Lubuk Pakam', 'Pancur Batu'],
+            ],
+            'Sulawesi Selatan' => [
+                'Kota Makassar' => ['Panakkukang', 'Rappocini', 'Tamalanrea'],
+            ],
+        ];
 
-        // Kota Bandung
-        $kotaBandungId = Region::create([
-            'level' => 'KOTA_KAB',
-            'name' => 'Kota Bandung',
-            'parent_id' => $jabarId,
-        ])->id;
+        foreach ($data as $provinsi => $kotaKabupaten) {
+            $prov = Region::create([
+                'level' => 'PROVINSI',
+                'name' => $provinsi,
+            ]);
 
-        // Kecamatan di Kota Bandung
-        Region::create([
-            'level' => 'KECAMATAN',
-            'name' => 'Coblong',
-            'parent_id' => $kotaBandungId,
-        ]);
+            foreach ($kotaKabupaten as $kota => $kecamatanList) {
+                $kotaRegion = Region::create([
+                    'level' => 'KOTA_KAB',
+                    'name' => $kota,
+                    'parent_id' => $prov->id,
+                ]);
 
-        Region::create([
-            'level' => 'KECAMATAN',
-            'name' => 'Sukajadi',
-            'parent_id' => $kotaBandungId,
-        ]);
-
-        // Kabupaten Garut
-        $kabGarutId = Region::create([
-            'level' => 'KOTA_KAB',
-            'name' => 'Kabupaten Garut',
-            'parent_id' => $jabarId,
-        ])->id;
-
-        // Kecamatan di Kabupaten Garut
-        Region::create([
-            'level' => 'KECAMATAN',
-            'name' => 'Tarogong Kidul',
-            'parent_id' => $kabGarutId,
-        ]);
+                foreach ($kecamatanList as $kecamatan) {
+                    Region::create([
+                        'level' => 'KECAMATAN',
+                        'name' => $kecamatan,
+                        'parent_id' => $kotaRegion->id,
+                    ]);
+                }
+            }
+        }
     }
 }
