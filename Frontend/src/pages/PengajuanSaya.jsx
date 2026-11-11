@@ -4,6 +4,7 @@ import {
   Plus,
   Search,
   RotateCcw,
+  ArrowRight,
   Copy,
   Calendar,
   CheckCircle2,
@@ -289,7 +290,7 @@ export default function PengajuanSaya({ onNavigate, onOpenDialog, currentUser })
             <div className="flex items-center gap-2">
               <h2 className="face-bold text-sm text-[#003828]">Daftar Usulan Terdaftar</h2>
               <span className="rounded bg-[#00513b] px-2 py-0.5 text-[10px] font-bold text-white">
-                3 Dokumen
+                {currentUser ? '3 Dokumen' : '0 Dokumen'}
               </span>
             </div>
             <div className="flex items-center gap-1.5 text-[11px] text-[#707974]">
@@ -299,6 +300,32 @@ export default function PengajuanSaya({ onNavigate, onOpenDialog, currentUser })
           </div>
 
           {/* Table */}
+          {!currentUser ? (
+            <div className="p-12 text-center flex flex-col items-center justify-center">
+              <div className="flex size-16 items-center justify-center rounded-2xl bg-[#ebf6ef] text-[#176b50] shadow-xs">
+                <FileText className="size-8" />
+              </div>
+              <h3 className="face-bold mt-4 text-base text-[#003828]">Belum Ada Riwayat Usulan</h3>
+              <p className="mt-1.5 max-w-md text-xs text-[#57605d] leading-relaxed">
+                Anda belum masuk ke akun. Silakan masuk menggunakan NIK terdaftar Anda untuk melihat riwayat pendaftaran bansos, atau buat usulan kelayakan mandiri baru.
+              </p>
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+                <button
+                  onClick={() => onNavigate && onNavigate('login', 'pengajuan-saya')}
+                  className="face-semibold rounded-lg bg-[#00513b] px-5 py-2.5 text-xs text-white shadow-xs hover:bg-[#003828] transition"
+                >
+                  <span className="flex items-center gap-1.5">Masuk ke Akun Anda <ArrowRight className="size-3.5" /></span>
+                </button>
+                <button
+                  onClick={() => onNavigate && onNavigate('buat-usulan')}
+                  className="face-semibold rounded-lg border border-[#dce9df] bg-white px-4 py-2.5 text-xs text-[#003828] hover:bg-[#ebf6ef] transition"
+                >
+                  + Buat Usulan Baru
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
@@ -531,6 +558,8 @@ export default function PengajuanSaya({ onNavigate, onOpenDialog, currentUser })
               </button>
             </div>
           </div>
+            </>
+          )}
         </div>
 
         {/* Bottom 2 Cards Grid: Alur & Pusat Bantuan */}

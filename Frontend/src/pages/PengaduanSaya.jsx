@@ -151,7 +151,7 @@ export default function PengaduanSaya({ onNavigate, currentUser }) {
                   <div>
                     <span className="text-[10px] font-bold uppercase tracking-wider text-[#707974]">TOTAL LAPORAN DIAJUKAN</span>
                     <div className="mt-1 flex items-baseline gap-2">
-                      <strong className="text-xl font-bold text-[#003828]">2</strong>
+                      <strong className="text-xl font-bold text-[#003828]">{currentUser ? '2' : '0'}</strong>
                       <span className="text-xs text-[#57605d]">Laporan Tercatat</span>
                     </div>
                   </div>
@@ -164,7 +164,7 @@ export default function PengaduanSaya({ onNavigate, currentUser }) {
                   <div>
                     <span className="text-[10px] font-bold uppercase tracking-wider text-[#b45309]">INVESTIGASI AKTIF</span>
                     <div className="mt-1 flex items-baseline gap-2">
-                      <strong className="text-xl font-bold text-[#b45309]">1</strong>
+                      <strong className="text-xl font-bold text-[#b45309]">{currentUser ? '1' : '0'}</strong>
                       <span className="text-xs text-[#92400e]">Uji Petik Satgas Lapangan</span>
                     </div>
                   </div>
@@ -177,7 +177,7 @@ export default function PengaduanSaya({ onNavigate, currentUser }) {
                   <div>
                     <span className="text-[10px] font-bold uppercase tracking-wider text-[#15803d]">TELAH DISELESAIKAN</span>
                     <div className="mt-1 flex items-baseline gap-2">
-                      <strong className="text-xl font-bold text-[#15803d]">1</strong>
+                      <strong className="text-xl font-bold text-[#15803d]">{currentUser ? '1' : '0'}</strong>
                       <span className="text-xs text-[#166534]">Terverifikasi & Tuntas</span>
                     </div>
                   </div>
@@ -189,7 +189,39 @@ export default function PengaduanSaya({ onNavigate, currentUser }) {
             </div>
 
             {/* Split View: Left (Riwayat) & Right (Detail Kasus) */}
-            <div className="grid gap-4 lg:grid-cols-12">
+            {!currentUser ? (
+              <div className="rounded-xl border border-black/[0.05] bg-white p-12 text-center flex flex-col items-center justify-center shadow-xs">
+                <div className="flex size-16 items-center justify-center rounded-2xl bg-[#ebf6ef] text-[#176b50] shadow-xs">
+                  <FileText className="size-8" />
+                </div>
+                <h3 className="face-bold mt-4 text-base text-[#003828]">Belum Ada Riwayat Pengaduan & Sanggah</h3>
+                <p className="mt-1.5 max-w-md text-xs text-[#57605d] leading-relaxed">
+                  Anda belum masuk ke akun. Silakan masuk menggunakan NIK terdaftar Anda untuk melihat tiket sanggah & pengaduan Anda, atau laporkan ketidaktepatan penyaluran bansos baru.
+                </p>
+                <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+                  <button
+                    onClick={() => onNavigate && onNavigate('login', 'pengaduan-saya')}
+                    className="face-semibold rounded-lg bg-[#00513b] px-5 py-2.5 text-xs text-white shadow-xs hover:bg-[#003828] transition"
+                  >
+                    <span className="flex items-center gap-1.5">Masuk ke Akun Anda <ArrowRight className="size-3.5" /></span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (!currentUser) {
+                        onNavigate && onNavigate('login', 'pengaduan-saya');
+                      } else {
+                        setViewMode('create');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }
+                    }}
+                    className="face-semibold rounded-lg border border-[#dce9df] bg-white px-4 py-2.5 text-xs text-[#003828] hover:bg-[#ebf6ef] transition"
+                  >
+                    + Buat Pengaduan Baru
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="grid gap-4 lg:grid-cols-12">
               
               {/* Kolom Kiri: Riwayat Pengaduan */}
               <div className="lg:col-span-4 space-y-3">
@@ -611,8 +643,8 @@ export default function PengaduanSaya({ onNavigate, currentUser }) {
 
                 </div>
               </div>
-
             </div>
+          )}
           </div>
         )}
 
