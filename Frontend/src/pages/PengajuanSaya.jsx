@@ -170,7 +170,7 @@ export default function PengajuanSaya({ onNavigate, onOpenDialog }) {
               </p>
             </div>
             <button
-              onClick={() => onOpenDialog && onOpenDialog('Pengajuan Usulan Mandiri')}
+              onClick={() => onNavigate ? onNavigate('buat-usulan') : onOpenDialog && onOpenDialog('Pengajuan Usulan Mandiri')}
               className="face-semibold flex items-center justify-center gap-2 rounded-lg bg-[#00513b] px-5 py-2.5 text-xs text-white shadow-xs transition hover:bg-[#003828] shrink-0"
             >
               <Plus className="size-4" />
@@ -449,7 +449,7 @@ export default function PengajuanSaya({ onNavigate, onOpenDialog }) {
                       {app.statusType === 'verifikasi' && (
                         <div className="flex flex-col items-end gap-2">
                           <button
-                            onClick={() => onOpenDialog && onOpenDialog(`Detail ${app.id}`)}
+                            onClick={() => onNavigate ? onNavigate('detail-pengajuan') : onOpenDialog && onOpenDialog(`Detail ${app.id}`)}
                             className="face-semibold flex items-center gap-1 rounded-md bg-[#00513b] px-3.5 py-1.5 text-xs text-white hover:bg-[#003828]"
                           >
                             Lihat Detail →

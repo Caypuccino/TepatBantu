@@ -1,6 +1,12 @@
 import { useState } from "react";
 import CekBansos from "./pages/CekBansos";
 import PengajuanSaya from "./pages/PengajuanSaya";
+import DetailPengajuan from "./pages/DetailPengajuan";
+import BuatUsulanBaru from "./pages/BuatUsulanBaru";
+import HalamanPengaduanSaya from "./pages/PengaduanSaya";
+import HalamanDataFaktual from "./pages/DataFaktual";
+import HalamanPressRelease from "./pages/PressRelease";
+import HalamanFAQ from "./pages/FAQ";
 
 const A = "/assets";
 
@@ -33,7 +39,7 @@ const services = [
       "Laporkan ketidaktepatan sasaran, dugaan pemotongan liar, atau kendala penyaluran dengan jaminan kerahasiaan pelapor dan nomor tiket pelacakan otomatis.",
     action: "Buat Laporan Sanggah",
     note: "Anonim & Terlindungi",
-    target: "cta",
+    target: "pengaduan-saya",
   },
 ];
 
@@ -137,10 +143,10 @@ export default function App() {
     { label: "Beranda", id: "home", type: "page" },
     { label: "Cek Bansos", id: "cek-bansos", type: "page" },
     { label: "Pengajuan Saya", id: "pengajuan-saya", type: "page" },
-    { label: "Pengaduan Saya", id: "Pengaduan Saya", type: "dialog" },
-    { label: "Data Faktual", id: "data", type: "scroll" },
-    { label: "Press Release", id: "news", type: "scroll" },
-    { label: "FAQ", id: "footer", type: "scroll" },
+    { label: "Pengaduan Saya", id: "pengaduan-saya", type: "page" },
+    { label: "Data Faktual", id: "data-faktual", type: "page" },
+    { label: "Press Release", id: "press-release", type: "page" },
+    { label: "FAQ", id: "faq", type: "page" },
   ];
 
   const handleNavClick = (item) => {
@@ -160,7 +166,7 @@ export default function App() {
   };
 
   const handleServiceClick = (target) => {
-    if (target === "cek-bansos" || target === "pengajuan-saya") {
+    if (target === "cek-bansos" || target === "pengajuan-saya" || target === "pengaduan-saya") {
       setCurrentPage(target);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
@@ -192,7 +198,10 @@ export default function App() {
           {/* Desktop Nav */}
           <nav className="hidden items-center gap-6 text-sm lg:flex" aria-label="Navigasi utama">
             {navLinks.map((item) => {
-              const isActive = currentPage === item.id;
+              const isActive =
+                currentPage === item.id ||
+                ((currentPage === "detail-pengajuan" || currentPage === "buat-usulan") &&
+                  item.id === "pengajuan-saya");
 
               return (
                 <button
@@ -283,9 +292,56 @@ export default function App() {
         )}
       </header>
 
-      {/* Dynamic View: Pengajuan Saya | Cek Bansos | Home */}
-      {currentPage === "pengajuan-saya" ? (
+      {/* Dynamic View: Buat Usulan Baru | Detail Pengajuan | Pengajuan Saya | Pengaduan Saya | Cek Bansos | Home */}
+      {currentPage === "buat-usulan" ? (
+        <BuatUsulanBaru
+          onNavigate={(page) => {
+            setCurrentPage(page);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+        />
+      ) : currentPage === "detail-pengajuan" ? (
+        <DetailPengajuan
+          onNavigate={(page) => {
+            setCurrentPage(page);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          onOpenDialog={(name) => setDialog(name)}
+        />
+      ) : currentPage === "pengajuan-saya" ? (
         <PengajuanSaya
+          onNavigate={(page) => {
+            setCurrentPage(page);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          onOpenDialog={(name) => setDialog(name)}
+        />
+      ) : currentPage === "pengaduan-saya" ? (
+        <HalamanPengaduanSaya
+          onNavigate={(page) => {
+            setCurrentPage(page);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          onOpenDialog={(name) => setDialog(name)}
+        />
+      ) : currentPage === "data-faktual" ? (
+        <HalamanDataFaktual
+          onNavigate={(page) => {
+            setCurrentPage(page);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          onOpenDialog={(name) => setDialog(name)}
+        />
+      ) : currentPage === "press-release" ? (
+        <HalamanPressRelease
+          onNavigate={(page) => {
+            setCurrentPage(page);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          onOpenDialog={(name) => setDialog(name)}
+        />
+      ) : currentPage === "faq" ? (
+        <HalamanFAQ
           onNavigate={(page) => {
             setCurrentPage(page);
             window.scrollTo({ top: 0, behavior: "smooth" });
